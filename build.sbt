@@ -54,9 +54,10 @@ cleanScript := {
 val scala211 = "2.11.12"
 val scala212 = "2.12.12"
 val scala213 = "2.13.3"
+val scala3 = "3.0.0-M1"
 
-val crossVersionAll = Seq(scala211, scala212, scala213)
-val crossVersionLastTwo = Seq(scala212, scala213)
+val crossVersionAll = Seq(scala211, scala212, scala213, scala3)
+val crossVersionLastTwo = Seq(scala212, scala213, scala3)
 
 val baseSettings = Seq(
   organization := "com.pauldijou",
@@ -65,7 +66,7 @@ val baseSettings = Seq(
   crossScalaVersions := crossVersionAll,
   crossVersion := CrossVersion.binary,
   autoAPIMappings := true,
-  libraryDependencies ++= Seq(Libs.scalatest),
+  libraryDependencies ++= Seq(Libs.scalatest.withDottyCompat(scalaVersion.value)),
   Test / aggregate := false,
   Test / fork := true,
   Test / parallelExecution := false,
@@ -181,6 +182,7 @@ lazy val playJsonProject = project.in(file("json/play-json"))
     name := "jwt-play-json",
     crossScalaVersions := crossVersionLastTwo,
     libraryDependencies ++= Seq(Libs.playJson)
+      .map(_.withDottyCompat(scalaVersion.value))
   )
   .aggregate(jsonCommonProject)
   .dependsOn(jsonCommonProject % "compile->compile;test->test")
@@ -191,6 +193,7 @@ lazy val circeProject = project.in(file("json/circe"))
     name := "jwt-circe",
     crossScalaVersions := crossVersionLastTwo,
     libraryDependencies ++= Seq(Libs.circeCore, Libs.circeParse, Libs.circeGeneric % "test")
+      .map(_.withDottyCompat(scalaVersion.value))
   )
   .aggregate(jsonCommonProject)
   .dependsOn(jsonCommonProject % "compile->compile;test->test")
@@ -200,7 +203,7 @@ lazy val upickleProject = project.in(file("json/upickle"))
   .settings(
     name := "jwt-upickle",
     crossScalaVersions := crossVersionLastTwo,
-    libraryDependencies ++= Seq(Libs.upickle)
+    libraryDependencies ++= Seq(Libs.upickle.withDottyCompat(scalaVersion.value))
   )
   .aggregate(jsonCommonProject)
   .dependsOn(jsonCommonProject % "compile->compile;test->test")
@@ -209,7 +212,7 @@ lazy val json4sCommonProject = project.in(file("json/json4s-common"))
   .settings(releaseSettings)
   .settings(
     name := "jwt-json4s-common",
-    libraryDependencies ++= Seq(Libs.json4sCore)
+    libraryDependencies ++= Seq(Libs.json4sCore.withDottyCompat(scalaVersion.value))
   )
   .aggregate(jsonCommonProject)
   .dependsOn(jsonCommonProject % "compile->compile;test->test")
@@ -218,7 +221,7 @@ lazy val json4sNativeProject = project.in(file("json/json4s-native"))
   .settings(releaseSettings)
   .settings(
     name := "jwt-json4s-native",
-    libraryDependencies ++= Seq(Libs.json4sNative)
+    libraryDependencies ++= Seq(Libs.json4sNative.withDottyCompat(scalaVersion.value))
   )
   .aggregate(json4sCommonProject)
   .dependsOn(json4sCommonProject % "compile->compile;test->test")
@@ -227,7 +230,7 @@ lazy val json4sJacksonProject = project.in(file("json/json4s-jackson"))
   .settings(releaseSettings)
   .settings(
     name := "jwt-json4s-jackson",
-    libraryDependencies ++= Seq(Libs.json4sJackson)
+    libraryDependencies ++= Seq(Libs.json4sJackson.withDottyCompat(scalaVersion.value))
   )
   .aggregate(json4sCommonProject)
   .dependsOn(json4sCommonProject % "compile->compile;test->test")
@@ -236,7 +239,7 @@ lazy val sprayJsonProject = project.in(file("json/spray-json"))
   .settings(releaseSettings)
   .settings(
     name := "jwt-spray-json",
-    libraryDependencies ++= Seq(Libs.sprayJson)
+    libraryDependencies ++= Seq(Libs.sprayJson.withDottyCompat(scalaVersion.value))
   )
   .aggregate(jsonCommonProject)
   .dependsOn(jsonCommonProject % "compile->compile;test->test")
@@ -245,7 +248,7 @@ lazy val argonautProject = project.in(file("json/argonaut"))
     .settings(releaseSettings)
     .settings(
       name := "jwt-argonaut",
-      libraryDependencies ++= Seq(Libs.argonaut)
+      libraryDependencies ++= Seq(Libs.argonaut.withDottyCompat(scalaVersion.value))
     )
     .aggregate(jsonCommonProject)
     .dependsOn(jsonCommonProject % "compile->compile;test->test")

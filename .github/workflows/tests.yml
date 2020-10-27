@@ -17,6 +17,7 @@ jobs:
           - 2.11.12
           - 2.12.12
           - 2.13.3
+          - 3.0.0-M1
         project:
           - playJsonProject
           - circeProject
